@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JA - Dispositivos</title>
+	<link rel="shortcut icon" type="image/x-icon" href="logo solo fondo gris.ico" mce_href="logo solo fondo gris.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="https://fonts.googleapis.com/css?family=Cabin|Questrial|Raleway" rel="stylesheet">
+    
+</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    var result1 = 0;
+    var result2 = 0;
+    var result3 = 0;
+    var result4 = 0;
+    var result5 = 0;
+    var result6 = 0;
+    var result7 = 0;
+    var result8 = 0;
+    
+    var result1anterior = 0;
+    var result2anterior = 0;
+    var result7anterior = 0;
+    var result8anterior = 0;
+    
+    function myFunction() {
+        alert("Reproduciendo sonido en el dispositivo");
+        document.getElementById("sonar").disabled= true;
+        document.getElementById("sonar").style.background = "#E97777";
+        document.getElementById("sonar").style.cursor = "initial";
+        document.getElementById("circulo").src="letter (2).png";
+        document.getElementById("iframe").style.borderColor = "#E97777";
+        document.getElementById("avisoreproduciendo").style.background="#E97777";
+        
+        ventana_secundaria = window.open("https://api.thingspeak.com/update?api_key=ZPBBEFIMDCPRMZOK&field3=1","miventana","width=300,height=200,menubar=no");
+        
+        window.setTimeout(salir, 3000);
+        
+    }
+    function salir() {
+        ventana_secundaria.close();
+    }
+    function modoemergencia() {
+        if(result3 === 0){
+            document.getElementById("sonar").disabled= false;
+            document.getElementById("sonar").style.background = "#fffff";
+            document.getElementById("sonar").style.cursor = "pointer";
+            document.getElementById("circulo").src="letter.png";
+            document.getElementById("iframe").style.borderColor = "#ffffff";
+            document.getElementById("avisoreproduciendo").style.background="#ffffff";
+        }
+        else{
+            document.getElementById("sonar").disabled= true;
+            document.getElementById("sonar").style.background = "#E97777";
+            document.getElementById("sonar").style.cursor = "initial";
+            document.getElementById("circulo").src="letter (2).png";
+            document.getElementById("iframe").style.borderColor = "#E97777";
+            document.getElementById("avisoreproduciendo").style.background="#E97777";
+        }
+    }
+    //----------------------------------------------Leer valores de thingpeak---------------------------------------------------
+   function loadmaps(){
+            $.getJSON("https://api.thingspeak.com/channels/1058626/fields/1/last.json?api_key=ZPBBEFIMDCPRMZOK", function(result){
+        	
+            var m = result;
+            result1=Number(m.field1);
+            
+                
+            
+        });
+            $.getJSON("https://api.thingspeak.com/channels/1058626/fields/2/last.json?api_key=ZPBBEFIMDCPRMZOK", function(result){
+        	
+            var m = result;
+            result2=Number(m.field2);
+                        
+                
+        });
+       $.getJSON("https://api.thingspeak.com/channels/1058626/fields/3/last.json?api_key=ZPBBEFIMDCPRMZOK", function(result){
+        	
+            var m = result;
+            result3=Number(m.field3);
+            
+                        
+                
+        });
+       $.getJSON("https://api.thingspeak.com/channels/1058626/fields/4/last.json?api_key=ZPBBEFIMDCPRMZOK", function(result){
+        	
+            var m = result;
+            result4=Number(m.field4);
+           
+                        
+                
+        });
+       $.getJSON("https://api.thingspeak.com/channels/1058626/fields/5/last.json?api_key=ZPBBEFIMDCPRMZOK", function(result){
+        	
+            var m = result;
+            result5=Number(m.field5);
+           
+                        
+                
+        });
+       $.getJSON("https://api.thingspeak.com/channels/1058626/fields/6/last.json?api_key=ZPBBEFIMDCPRMZOK", function(result){
+        	
+            var m = result;
+            result6=Number(m.field6);
+          
+                        
+                
+        });
+       $.getJSON("https://api.thingspeak.com/channels/1058626/fields/7/last.json?api_key=ZPBBEFIMDCPRMZOK", function(result){
+        	
+            var m = result;
+            result7=Number(m.field7);
+          
+                        
+                
+        });
+       $.getJSON("https://api.thingspeak.com/channels/1058626/fields/8/last.json?api_key=ZPBBEFIMDCPRMZOK", function(result){
+        	
+            var m = result;
+            result8=Number(m.field8);
+          
+                        
+                
+        });
+       
+        }
+    //--------------------------------------------------------------------------------------------------------------------
+    function refrescar(){
+        var direccion = "https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d2892.7473558697748!2d" + result1 + "!3d"+ result2 + "!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1589618567664!5m2!1ses!2ses";
+        
+        document.getElementById("nombrelocalizando").style.visibility="hidden";
+        document.getElementById("logolocalizando").style.visibility="hidden";
+        document.getElementById("iframe").src=direccion;
+        document.getElementById("circulo").style.visibility="visible";  
+        document.getElementById("avisoreproduciendo").style.visibility="visible";
+    }
+    function fecha(){
+        var fecha = ("La útlima actualización se realizó el " + result4 + "/" + result5 + "/" + result6 + " a las " + result7 + ":" + result8 + ".");
+        document.getElementById("descripcionaplicacion").innerHTML=fecha;
+        
+        if((result1 === result1anterior) && (result2 === result2anterior)){
+            if((result7 === result7anterior) && (result8 === result8anterior)){
+                document.getElementById("nombrereproduciendo").innerHTML="El dispositivo está sin conexión."; 
+            }
+            else{
+                document.getElementById("nombrereproduciendo").innerHTML="El dispositivo está parado."; 
+            }
+
+        }
+        else{
+            document.getElementById("nombrereproduciendo").innerHTML="El dispositivo está en movimiento.";
+
+        }
+        result1anterior = result1;
+        result2anterior = result2;
+        result7anterior = result7;
+        result8anterior = result8;
+    }
+    function comprobar(){
+        
+    }
+    window.onload = function() {
+        setInterval(loadmaps, 25000);
+        setInterval(fecha, 27000);
+        setInterval(modoemergencia, 27000);
+        setInterval(refrescar, 26000);
+      
+        
+        
+    }
+</script>
+
+    
+    
+    
+    
+<body> 
+    <div id="todo">
+        <img id="logojose" src="logoJOSE.png" alt="logo JA"/>
+        <h1 id="titulologo">Dispositivos</h1>
+        <h2 id="titulousuario">GPS</h2>
+        
+    
+
+        <div id="resumen">
+            <center>
+                <img id="logousuario" src="028-boy-3.png" alt="Menú"/>
+                <p>
+                <h5 id="descripcionjose">Desarrollado por:</h5>
+                <p>
+                <h3 id="nombreusuario">Jose Antonio <br> Álvarez Álvarez</h3>
+              </center>
+        </div>
+        
+        <div id="paneldecontrol">
+            <h3 id="nombreusuario">Información del dispositivo</h3>
+            <h5 id="descripcionaplicacion2">La ubicación del dispositivo se actualiza cada 20 segundos.</h5>    
+        </div>
+        <h3 id="panel" >Panel de control</h3>
+        
+        <input type="button" onclick="myFunction()" class="btn" name="boton" id="sonar" value="♫" title="Emitir sonido en el dispositivo"/>
+        
+        <input id="recargar" type="submit" value="↻" title="Actualizar ubicación" onclick="location.reload()">
+        <div id="actualizacion">
+                <h3 id="nombreusuario">Última actualización</h3>
+            
+            <h5 id='descripcionaplicacion'></h5>
+                 
+            </div>
+        <img id="circulo" src="letter.png"/>
+        <div id="iframecapa"></div>
+        
+        <div id="avisoreproduciendo">
+            <h5 id="nombrereproduciendotitulo">Estado del dispositivo</h5>
+            <h3 id="nombrereproduciendo"></h3>
+        </div>
+        
+        <h3 id="nombrelocalizando">Localizando dispositivo...</h3>
+            <h3 id="logolocalizando">↻</h3>
+        <iframe id="iframe" src=""></iframe>
+    </div>
+</body>
+<script>
+        document.getElementById("circulo").style.visibility="hidden";
+        document.getElementById("nombrelocalizando").style.visibility="visible";
+        document.getElementById("logolocalizando").style.visibility="visible";
+        document.getElementById("avisoreproduciendo").style.visibility="hidden";
+</script>
+    
+<style>
+
+    #avisoreproduciendo{
+        float:left;
+        padding: 20px;
+        box-shadow: rgb(217, 217, 217) 5px 5px 20px;
+        height: 54px;
+        width: 175px;
+        position: absolute;
+        left: 50%;
+        border-radius: 9px;
+        margin-bottom: 15px;
+        margin-top: 179px ;
+        margin-left: -315px; 
+        z-index: 2;
+        background: #ffffff;
+    }
+    #nombrereproduciendo{
+        font-size:13px;
+        font-family: Raleway;
+        font-weight:300;
+        margin-top: 0px;
+        color: #424949;
+        z-index: 2;
+    }
+    #nombrereproduciendotitulo{
+        font-size:16px;
+        font-family: Raleway;
+        font-weight: 400;
+        margin-top: 0px;
+        margin-bottom: 5px;
+        color: #424949;
+        z-index: 2;
+    }
+    #descripcionjose{
+        margin-top: 5px;
+        font-size:13px;
+        margin-bottom: -11px;
+        font-family: sans-serif;
+        font-weight: 300;
+        color: #424949;
+    }
+    #nombrelocalizando{
+        font-size:23px;
+        font-family: Raleway;
+        font-weight: 300;
+        color: #77ABE9;
+        margin-top: 640px ;
+        position: absolute;
+        left: 50%;
+        margin-left: 33px; 
+        z-index: 2;
+    }
+    #logolocalizando{
+        font-size:33px;
+        font-family: Raleway;
+        font-weight: 300;
+        color: #77ABE9;
+        margin-top: 692px ;
+        position: absolute;
+        left: 50%;
+        margin-left: 145px; 
+        z-index: 2;
+    }
+    #panel{
+        position: absolute;
+        left: 50%;
+        margin-left: -669px; 
+        margin-top: 785px;
+        
+        font-size:23px;
+        font-family: Raleway;
+        font-weight: 300;
+        color: #424949;
+    }
+    #actualizacion{
+        float:left;
+        padding: 40px;
+        box-shadow: rgb(217, 217, 217) 5px 5px 20px;
+        height: 71px;
+        width: 240px;
+        position: absolute;
+        left: 50%;
+        border-radius: 9px;
+        margin-top: 968px ;
+        margin-left: -672px; 
+        
+        background: #E4E573;
+ 
+        
+    }
+    #sonar{
+        outline: none;
+        cursor: pointer;
+        font-size:20px;
+        float:left;
+        padding: 40px;
+        box-shadow: rgb(217, 217, 217) 5px 5px 20px;
+        height: 115px;
+        width: 147px;
+        position: absolute;
+        left: 50%;
+        border-radius: 9px;
+        margin-bottom: 15px;
+        margin-top: 830px ;
+        margin-left: -672px; 
+        border:0px solid #ffffff;
+        background: #E97777;
+    }
+    #sonar:hover{
+        background: #E84444;
+    }
+    #recargar{
+        outline: none;
+        cursor: pointer;
+        font-size:20px;
+        float:left;
+        padding: 40px;
+        box-shadow: rgb(217, 217, 217) 5px 5px 20px;
+        height: 115px;
+        width: 147px;
+        position: absolute;
+        left: 50%;
+        border-radius: 9px;
+        margin-bottom: 15px;
+        margin-top: 830px ;
+        margin-left: -500px; 
+        border:0px solid #ffffff;
+        background: #77ABE9;
+    }
+    #recargar:hover{
+        background: #3F87E3;
+    }
+    #resumen, #paneldecontrol{
+         background: #ffffff;
+  
+    }
+    #circulo {
+        width: 45px;
+        height: 45px;
+        z-index: 3;
+        margin-top: 598px ;
+        position: absolute;
+        left: 50%;
+        margin-left: 150px; 
+        
+    }
+     #iframecapa {
+        height: 980px;
+        width: 1000px;
+        border-radius: 9px;
+        margin-top: 168px ;
+        position: absolute;
+        left: 50%;
+        margin-left: -326px;
+
+        z-index: 3;
+}
+    #iframe {
+        box-shadow: rgb(217, 217, 217) 5px 5px 20px;
+        height: 944px;
+        width: 990px;
+        border-radius: 9px;
+        margin-bottom: 15px;
+        margin-top: 168px ;
+        position: absolute;
+        left: 50%;
+        margin-left: -326px;
+        border:4px solid #ffffff;
+        z-index: 1;
+        background: #ffffff;
+}
+    #enlaceaplicacion{
+        outline: none;
+        float: center;
+        cursor: pointer;
+        font-size:13px;
+        font-family: Raleway;
+        font-weight: 300;
+        color: #ffffff;
+        background: #424949;
+        padding: 4px;
+        height: 34px;
+        width: 118px;
+        border-radius: 5px;
+        position: center;
+        border:1px solid #424949;
+    }
+    #enlaceaplicacion:hover{
+        outline: none;
+        float: center;
+        cursor: pointer;
+        font-size:13px;
+        font-family: Raleway;
+        font-weight: 300;
+        color: #ffffff;
+        background: #424949;
+        padding: 4px;
+        height: 34px;
+        width: 118px;
+        border-radius: 5px;
+        position: center;
+        border:1px solid #424949;
+     box-shadow: rgb(217, 217, 217) 5px 5px 20px;
+    }
+    #conjuntocajas{
+        margin-top: 640px ;
+        position: absolute;
+        left: 50%;
+        margin-left: -699px;  
+    }
+    #resumen{
+        float:left;
+        padding: 40px;
+        box-shadow: rgb(217, 217, 217) 5px 5px 20px;
+        height: 220px;
+        width: 240px;
+        position: absolute;
+        left: 50%;
+        border-radius: 9px;
+        margin-bottom: 15px;
+        margin-top: 168px ;
+        margin-left: -672px; 
+    }
+    #paneldecontrol{
+        float:left;
+        padding: 40px;
+        box-shadow: rgb(217, 217, 217) 5px 5px 20px;
+        height: 189px;
+        width: 240px;
+        position: absolute;
+        left: 50%;
+        border-radius: 9px;
+        margin-bottom: 15px;
+        margin-top: 490px ;
+        margin-left: -672px; 
+    }
+    #logousuario{
+        height: 120px;
+        width: 120px;
+    }
+    #titulologo{
+        font-size:32px;
+        font-family: Raleway;
+        color:#272727;
+        font-weight:300;
+        position: absolute;
+        left: 50%;
+        margin-left: -549px; 
+        margin-top: 57px;
+    }
+    #titulousuario{
+        font-size:21px;
+        font-family: Raleway;
+        color:#161616;
+        font-weight:300;
+        position: absolute;
+        left: 50%;
+        margin-left: -549px; 
+        margin-top: 95px;
+    }
+    #logojose{
+        height:100px;
+        width: 112px;
+        position: absolute;
+        left: 50%;
+        margin-left: -675px; 
+        margin-top: 42px;
+    }
+    #logomenu, #logocolor{
+     	cursor: pointer;
+        width: 30px;
+        height: 30px;
+        margin-left: 5px;
+    }
+    #nombreaplicacion{
+        font-size:23px;
+        font-family: Raleway;
+        font-weight: 300;
+        margin-top: 0px;
+        color: #424949;
+    }
+     #nombreusuario{
+        font-size:23px;
+        font-family: Raleway;
+        font-weight: 300;
+        margin-top: 0px;
+        color: #424949;
+    }
+    #descripcionaplicacion{
+        margin-top: -10px;
+        font-size:13px;
+        margin-bottom: 35px;
+        font-family: sans-serif;
+        font-weight: 300;
+        color: #424949;
+    }
+    #descripcionaplicacion2{
+        margin-top: -10px;
+        font-size:13px;
+        margin-bottom: 35px;
+        font-family: sans-serif;
+        font-weight: 300;
+        color: #424949;
+    }
+    body{
+        margin: 0; 
+        background: #F5F5F5;              
+    }
+    </style>
+</html>
